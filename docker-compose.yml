@@ -41,21 +41,21 @@ services:
     ports:
       - 9000:9000
 
-  nest:
-    container_name: nest
-    image: nest:1.0.0
-    environment:
-      - MQTT_URL=mqtt://mqtt:1883
-    depends_on:
-      - mqtt
-#      - zigbee2mqtt
-    build:
-      context: ./
-      target: production
-      dockerfile: ./Dockerfile
-    command: npm run start:prod
-    ports:
-      - 3001:3001
-    volumes:
-      - ./:/app
-    restart: unless-stopped
+#  nest:
+#    container_name: nest
+#    image: nest:1.0.0
+#    environment:
+#      - MQTT_URL=mqtt://mqtt:1883
+#    depends_on:
+#      - mqtt
+##      - zigbee2mqtt
+#    build:
+#      context: ./
+#      target: production
+#      dockerfile: ./Dockerfile
+#    command: npm run start:prod
+#    ports:
+#      - 3001:3001
+#    volumes:
+#      - ./:/app
+#    restart: unless-stopped

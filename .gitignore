@@ -3,6 +3,7 @@
 /node_modules
 /portainer-data
 /zigbee2mqtt-data
+.env
 
 # Logs
 logs
