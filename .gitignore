@@ -2,6 +2,7 @@
 /dist
 /node_modules
 /portainer-data
+/zigbee2mqtt-data
 
 # Logs
 logs
