@@ -1,0 +1,62 @@
+version: '3.8'
+services:
+  mqtt:
+    image: eclipse-mosquitto:2.0
+    restart: unless-stopped
+    volumes:
+      - ./mosquitto/config:/mosquitto/config
+      - ./mosquitto/data:/mosquitto/data
+      - ./mosquitto/log:/mosquitto/log
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    command: "mosquitto -c /mosquitto-no-auth.conf"
+
+#  zigbee2mqtt:
+#    container_name: zigbee2mqtt
+#    restart: unless-stopped
+#    image: koenkk/zigbee2mqtt
+#    depends_on:
+#      - mqtt
+#    volumes:
+#      - ./zigbee2mqtt-data:/app/data
+#      - /run/udev:/run/udev:ro
+#    ports:
+#      - 8082:8080
+#    environment:
+#      - TZ=Europe/Moscow
+#    devices:
+#      - /dev/ttyUSB0:/dev/ttyUSB0
+
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./portainer-data:/data
+    ports:
+      - 9000:9000
+
+  nest:
+    container_name: nest
+    image: nest:1.0.0
+    environment:
+      - MQTT_URL=mqtt://mqtt:1883
+    depends_on:
+      - mqtt
+#      - zigbee2mqtt
+    build:
+      context: ./
+      target: production
+      dockerfile: ./Dockerfile
+    command: npm run start:prod
+    ports:
+      - 3001:3001
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    restart: unless-stopped

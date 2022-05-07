@@ -12,11 +12,20 @@ const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const zigbee_module_1 = require("./zigbee/zigbee.module");
 const events_module_1 = require("./gateways/events.module");
+const config_1 = require("@nestjs/config");
+const configuration_1 = require("./config/configuration");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [zigbee_module_1.ZigbeeModule, events_module_1.EventsModule],
+        imports: [
+            config_1.ConfigModule.forRoot({
+                isGlobal: true,
+                load: [configuration_1.default],
+            }),
+            zigbee_module_1.ZigbeeModule,
+            events_module_1.EventsModule,
+        ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
     })

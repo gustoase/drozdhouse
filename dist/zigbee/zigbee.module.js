@@ -10,23 +10,28 @@ exports.ZigbeeModule = void 0;
 const common_1 = require("@nestjs/common");
 const mqtt_controller_1 = require("./mqtt/mqtt.controller");
 const microservices_1 = require("@nestjs/microservices");
+const config_1 = require("@nestjs/config");
 let ZigbeeModule = class ZigbeeModule {
 };
 ZigbeeModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            microservices_1.ClientsModule.register([
+            microservices_1.ClientsModule.registerAsync([
                 {
                     name: 'MQTT_SERVICE',
-                    transport: microservices_1.Transport.MQTT,
-                    options: {
-                        url: 'mqtt://localhost:1883',
-                        serializer: {
-                            serialize(value) {
-                                return value.data;
+                    imports: [config_1.ConfigModule],
+                    useFactory: async (configService) => ({
+                        transport: microservices_1.Transport.MQTT,
+                        options: {
+                            url: configService.get('mqtt'),
+                            serializer: {
+                                serialize(value) {
+                                    return value.data;
+                                },
                             },
                         },
-                    },
+                    }),
+                    inject: [config_1.ConfigService],
                 },
             ]),
         ],
