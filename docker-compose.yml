@@ -45,7 +45,7 @@ services:
 
   nest:
     container_name: nest
-    image: gustoase/drozdhouse:0.1
+    image: gustoase/drozdhouse:0.2
     environment:
       - MQTT_URL=mqtt://mqtt:1883
     depends_on:
