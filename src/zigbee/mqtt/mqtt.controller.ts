@@ -29,9 +29,11 @@ export class MqttController {
     // this.mqttService.subscribe('zigbee2mqtt/bridge/devices', {});
   }
 
-  @MessagePattern('zigbee2mqtt/button1')
+  @MessagePattern('zigbee2mqtt/button_children')
   private button1Set(@Ctx() context: MqttContext, @Payload() data) {
-    this.client.emit('zigbee2mqtt/switch1/set', { state: 'TOGGLE' });
+    this.client.emit('zigbee2mqtt/relay_room_children/set', {
+      state: 'TOGGLE',
+    });
   }
 
   @MessagePattern('zigbee2mqtt/bridge/devices')
